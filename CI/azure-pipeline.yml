@@ -72,4 +72,4 @@ stages:
             inputs:
               kubernetesServiceConnection: RuntimeServiceKubernetesDevAdmin
               namespace: default
-              manifests: CI/azure_devops_agent_elvia.yaml
+              manifests: $(System.ArtifactsDirectory)/CI/azure_devops_agent_elvia.yaml
