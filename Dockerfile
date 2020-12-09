@@ -48,6 +48,12 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
         docker-ce-cli \
         containerd.io
 
+# helm
+RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - \
+    && echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list \
+    && apt-get update \
+    && apt-get install helm
+
 # node & npm
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     && apt-get update \
