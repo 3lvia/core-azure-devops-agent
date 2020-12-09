@@ -30,8 +30,9 @@ RUN wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-p
     && apt-get update \
     && apt-get install \
         dotnet-sdk-3.1 \
-        dotnet-sdk-2.2 \
-        dotnet-sdk-2.1 
+        dotnet-sdk-2.1 \
+        dotnet-sdk-5.0
+
 
 # kubectl
 RUN curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
