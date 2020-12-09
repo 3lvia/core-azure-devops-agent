@@ -67,4 +67,7 @@ WORKDIR /azp
 COPY ./start_azure_devops_agent.sh .
 RUN chmod +x start_azure_devops_agent.sh
 
+# Aqua thinks this file is secret. We remove it
+RUN rm -rf /var/lib/apt/lists/packages.microsoft.com_ubuntu_20.04_prod_dists_focal_InRelease
+
 CMD ["./start_azure_devops_agent.sh"]
