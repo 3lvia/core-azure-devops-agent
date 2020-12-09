@@ -1,13 +1,11 @@
-version='1.0.0'
+version='1.1.0'
 az login 
-az acr login --name containerregistryprod
+az acr login --name containerregistryelvia
 docker build -t azuredevopsagent:$version .
-docker tag azuredevopsagent:$version containerregistryprod.azurecr.io/azuredevopsagent:$version
-docker push containerregistryprod.azurecr.io/azuredevopsagent:$version
-kubectl apply -f secret_azuredevopsagentelvia.yaml
-kubectl apply -f secret_azuredevopsagenthafslund.yaml
+docker tag azuredevopsagent:$version containerregistryelvia.azurecr.io/azuredevopsagent:$version
+docker push containerregistryelvia.azurecr.io/azuredevopsagent:$version
+# kubectl apply -f secret_azuredevopsagentelvia.yaml
 kubectl apply -f azuredevopsagentelvia.yaml
-kubectl apply -f azuredevopsagenthafslund.yaml
 
 
 

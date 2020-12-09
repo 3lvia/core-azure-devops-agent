@@ -1,0 +1,69 @@
+trigger:
+  - trunk
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  containerregistry: 'ContainerRegistryElvia'
+  imagetag: $(Build.BuildNumber)
+  name: azuredevopsagentelvia
+  namespace: default
+
+stages:
+- stage: Build
+  jobs:
+  - job:
+      - task: Docker@2
+        displayName: "Build image $(namespace)-$(name)"
+        inputs:
+          containerRegistry: $(containerregistry)
+          repository: "$(namespace)-$(name)"
+          command: build
+          DockerFile: Dockerfile
+          tags: "$(imagetag)"
+      - task: Docker@2
+        displayName: "Login for $(containerregistry)"
+        inputs:
+          containerRegistry: $(containerregistry)
+          command: login
+      - task: aquasecScanner@4
+        displayName: "Scan docker image with Aquasec"
+        inputs:
+          image: "containerregistryelvia.azurecr.io/$(namespace)-$(name):$(imagetag)"
+          scanner: "containerregistryelvia.azurecr.io/aquasec/scanner:latest"
+          connection: "aqua-scanner"
+          policies: Default
+        continueOnError: false
+      - task: Docker@2
+        displayName: Push docker image
+        inputs:
+          containerRegistry: $(containerregistry)
+          repository: "$(namespace)-$(name)"
+          command: push
+          tags: "$(imagetag)"
+      - bash: 'sed -i "s/:imagetag/:$(imagetag)/" azure_devops_agent_elvia.yaml'
+        displayName: 'set image tag'
+        workingDirectory: CI 
+      - task: PublishBuildArtifacts@1
+        displayName: "Publish kubernetes configuration artifacts"
+        inputs:
+          PathtoPublish: ${{ parameters.ciFolder }}
+          ArtifactName: CI
+
+- stage: DeployDev
+  dependsOn: Build
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/trunk')
+  jobs:
+  - deployment: Deploy
+    displayName: deploy dev
+    environment: dev
+    strategy:
+      runOnce:
+        deploy:
+          - task: KubernetesManifest@0
+            displayName: Deploy
+            inputs:
+              kubernetesServiceConnection: RuntimeServiceKubernetesDevAdmin
+              namespace: default
+              manifests: CI/azure_devops_agent_elvia.yaml

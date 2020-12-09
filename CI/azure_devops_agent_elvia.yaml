@@ -17,7 +17,7 @@ spec:
       - name: containerregistryprodsecret
       containers:
       - name: azuredevopsagentelvia
-        image: containerregistryprod.azurecr.io/azuredevopsagent:1.0.0
+        image: containerregistryprod.azurecr.io/azuredevopsagent:imagetag
         env:
           - name: AZP_URL
             value: "https://dev.azure.com/3lvia"
