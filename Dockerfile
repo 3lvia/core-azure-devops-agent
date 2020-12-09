@@ -56,7 +56,7 @@ RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - \
     && apt-get install helm
 
 # node & npm
-RUN curl -sL https://deb.nodesource.com/setup_15.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
     && apt-get update \
     && apt-get install nodejs
 
