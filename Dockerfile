@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 # To make it easier for build and release pipelines to run apt-get,
 # configure apt to not require confirmation (assume the -y argument by default)
@@ -56,7 +56,7 @@ RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - \
     && apt-get install helm
 
 # node & npm
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_15.x | bash - \
     && apt-get update \
     && apt-get install nodejs
 
