@@ -63,6 +63,10 @@ stages:
       runOnce:
         deploy:
           steps:
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              artifactName: "CI"
+              downloadPath: "$(System.ArtifactsDirectory)"
           - task: KubernetesManifest@0
             displayName: Deploy
             inputs:
