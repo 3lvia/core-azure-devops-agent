@@ -62,6 +62,7 @@ stages:
     strategy:
       runOnce:
         deploy:
+          steps:
           - task: KubernetesManifest@0
             displayName: Deploy
             inputs:
