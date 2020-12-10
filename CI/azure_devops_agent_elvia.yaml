@@ -13,11 +13,9 @@ spec:
       labels:
         app: azuredevopsagentelvia
     spec:
-      imagePullSecrets:
-      - name: containerregistryprodsecret
       containers:
       - name: azuredevopsagentelvia
-        image: containerregistryprod.azurecr.io/azuredevopsagent:imagetag
+        image: containerregistryelvia.azurecr.io/azuredevopsagent:imagetag
         env:
           - name: AZP_URL
             value: "https://dev.azure.com/3lvia"
