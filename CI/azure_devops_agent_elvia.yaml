@@ -13,6 +13,8 @@ spec:
       labels:
         app: azuredevopsagentelvia
     spec:
+      imagePullSecrets:
+      - name: containerregistryelvia
       containers:
       - name: azuredevopsagentelvia
         image: containerregistryelvia.azurecr.io/azuredevopsagent:imagetag
