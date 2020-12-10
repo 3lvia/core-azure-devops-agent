@@ -17,7 +17,7 @@ spec:
       - name: containerregistryelvia
       containers:
       - name: azuredevopsagentelvia
-        image: containerregistryelvia.azurecr.io/azuredevopsagent:imagetag
+        image: containerregistryelvia.azurecr.io/core-azuredevopsagentelvia:imagetag
         env:
           - name: AZP_URL
             value: "https://dev.azure.com/3lvia"
