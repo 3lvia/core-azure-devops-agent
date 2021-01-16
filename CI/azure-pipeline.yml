@@ -52,24 +52,24 @@ stages:
           PathtoPublish: CI
           ArtifactName: CI
 
-- stage: DeployDev
-  dependsOn: Build
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/trunk'), true)
-  jobs:
-  - deployment: Deploy
-    displayName: deploy dev
-    environment: dev
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: DownloadBuildArtifacts@0
-            inputs:
-              artifactName: "CI"
-              downloadPath: "$(System.ArtifactsDirectory)"
-          - task: KubernetesManifest@0
-            displayName: Deploy
-            inputs:
-              kubernetesServiceConnection: RuntimeServiceKubernetesDevAdmin
-              namespace: aqua # this ns allows for root images
-              manifests: $(System.ArtifactsDirectory)/CI/azure_devops_agent_elvia.yaml
+# - stage: DeployDev
+#   dependsOn: Build
+#   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/trunk'), true)
+#   jobs:
+#   - deployment: Deploy
+#     displayName: deploy dev
+#     environment: dev
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - task: DownloadBuildArtifacts@0
+#             inputs:
+#               artifactName: "CI"
+#               downloadPath: "$(System.ArtifactsDirectory)"
+#           - task: KubernetesManifest@0
+#             displayName: Deploy
+#             inputs:
+#               kubernetesServiceConnection: RuntimeServiceKubernetesDevAdmin
+#               namespace: aqua # this ns allows for root images
+#               manifests: $(System.ArtifactsDirectory)/CI/azure_devops_agent_elvia.yaml
