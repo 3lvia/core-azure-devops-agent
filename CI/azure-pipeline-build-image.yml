@@ -18,6 +18,7 @@ stages:
         submodules: recursive  
         persistCredentials: true
       - script: |
+          git submodule update --init --recursive
           ls -l submodules/virtual-environments/
         displayName: list submodule
       # - script: packer build images/linux/ubuntu2004.json
