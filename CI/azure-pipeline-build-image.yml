@@ -1,5 +1,5 @@
 trigger:
-  - main
+  - trunk
 
 # pool: elvia-hosted-agent-dev
 
