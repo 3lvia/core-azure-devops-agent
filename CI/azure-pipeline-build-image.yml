@@ -21,10 +21,10 @@ stages:
           git submodule update --init --recursive
         displayName: update submodule
       - script: |
-          cat submodules/virtual-environments/images/linux/ubuntu2004.json | jq '.builders[0] += {"managed_image_resource_group_name": "CORE-RGprod","managed_image_name": "azure-devops-pipeline-agent"}' > ubuntu2004.json 
+          cat submodules/virtual-environments/images/linux/ubuntu2004.json | jq '.builders[0] += {"managed_image_resource_group_name": "CORE-RGprod","managed_image_name": "azure-devops-pipeline-agent"}' |jq 'del(.builders[0].resource_group_name,.builders[0].storage_account,.builders[0].capture_container_name,.builders[0].capture_name_prefix)' > submodules/virtual-environments/images/linux/ubuntu_replaced.json
         displayName: Update packer template
       - script: |
-          packer build -force ubuntu2004.json 
+          packer build -force submodules/virtual-environments/images/linux/ubuntu_replaced.json
         displayName: Packer build
         env: 
           ARM_CLIENT_ID: 526cb446-977d-4db5-b110-40dc065ff64b # sp-terraform-core-prod
