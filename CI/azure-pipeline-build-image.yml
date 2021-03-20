@@ -28,6 +28,7 @@ stages:
       - script: |
           rand=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13 ; echo '')
           imagename="azure-devops-pipeline-agent-$rand"
+          echo "##vso[task.setvariable variable=imagename]$imagename"
         displayName: Update packer template
       - script: |
           echo "image name: $imagename"
