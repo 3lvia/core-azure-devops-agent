@@ -1,10 +1,15 @@
-trigger:
-  - trunk
+schedules:
+- cron: "0 1 * * 1"
+  displayName: At 01:00 on Monday
+  branches:
+    include:
+    - trunk
+  always: true
 
-pool: elvia-hosted-agent-dev
+# pool: elvia-hosted-agent-dev
 
-# pool:
-#   vmImage: "ubuntu-latest"
+pool:
+  vmImage: "ubuntu-latest"
 
 stages:
 - stage: BuildProd
@@ -23,6 +28,7 @@ stages:
       - script: |
           cat submodules/virtual-environments/images/linux/ubuntu2004.json | jq '.builders[0] += {"managed_image_resource_group_name": "CORE-RGprod","managed_image_name": "azure-devops-pipeline-agent"}' |jq 'del(.builders[0].resource_group_name,.builders[0].storage_account,.builders[0].capture_container_name,.builders[0].capture_name_prefix)' > submodules/virtual-environments/images/linux/ubuntu_replaced.json
         displayName: Update packer template
+        # update packer template to create a managed image instead of a vdh-file
       - script: |
           packer build -force submodules/virtual-environments/images/linux/ubuntu_replaced.json
         displayName: Packer build

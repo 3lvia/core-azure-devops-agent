@@ -6,7 +6,7 @@ schedules:
     - trunk
   always: true
 
-pool: elvia-hosted-agent-dev
+pool: elvia
 
 steps:
   - bash: echo "Ah, ha, ha, ha, stayin' alive, stayin' alive"
