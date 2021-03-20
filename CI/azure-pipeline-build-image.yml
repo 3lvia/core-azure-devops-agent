@@ -1,10 +1,10 @@
 trigger:
   - trunk
 
-# pool: elvia-hosted-agent-dev
+pool: elvia-hosted-agent-dev
 
-pool:
-  vmImage: "ubuntu-latest"
+# pool:
+#   vmImage: "ubuntu-latest"
 
 stages:
 - stage: BuildProd
@@ -19,15 +19,18 @@ stages:
         persistCredentials: true
       - script: |
           git submodule update --init --recursive
-          ls -l submodules/virtual-environments/
-        displayName: list submodule
-      # - script: packer build images/linux/ubuntu2004.json
-      #   displayName: Packer build
-      #   env: 
-      #     ARM_CLIENT_ID: 526cb446-977d-4db5-b110-40dc065ff64b # sp-terraform-core-prod
-      #     ARM_CLIENT_SECRET: $(client_secret)
-      #     ARM_SUBSCRIPTION_ID: 6cd117f2-adb1-452e-a60e-86131c1f11d4 # core
-      #     ARM_TENANT_ID: 2186a6ec-c227-4291-9806-d95340bf439d
-      #     ARM_RESOURCE_GROUP: CORE-RGprod
-      #     ARM_STORAGE_ACCOUNT: elviacoreprod
-      #     ARM_RESOURCE_LOCATION: westeurope
+        displayName: update submodule
+      - script: |
+          cat submodules/virtual-environments/images/linux/ubuntu2004.json | jq '.builders[0] += {"managed_image_resource_group_name": "CORE-RGprod","managed_image_name": "azure-devops-pipeline-agent"}' > ubuntu2004.json 
+        displayName: Update packer template
+      - script: |
+          packer build -force ubuntu2004.json 
+        displayName: Packer build
+        env: 
+          ARM_CLIENT_ID: 526cb446-977d-4db5-b110-40dc065ff64b # sp-terraform-core-prod
+          ARM_CLIENT_SECRET: $(client_secret)
+          ARM_SUBSCRIPTION_ID: 6cd117f2-adb1-452e-a60e-86131c1f11d4 # core
+          ARM_TENANT_ID: 2186a6ec-c227-4291-9806-d95340bf439d
+          ARM_RESOURCE_GROUP: CORE-RGprod
+          ARM_STORAGE_ACCOUNT: elviacoreprod
+          ARM_RESOURCE_LOCATION: westeurope

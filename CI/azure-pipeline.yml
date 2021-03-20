@@ -1,5 +1,5 @@
-trigger:
-  - trunk
+# trigger:
+#   - trunk
 
 pool:
   vmImage: "ubuntu-latest"
