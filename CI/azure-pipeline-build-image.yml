@@ -19,32 +19,6 @@ stages:
   - job:
     timeoutInMinutes: 360
     steps:
-      - checkout: self
-        submodules: recursive  
-        persistCredentials: true
-      - script: |
-          git submodule update --init --recursive
-        displayName: update submodule
-      - script: |
-          rand=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13 ; echo '')
-          echo "##vso[task.setvariable variable=imagename]azure-devops-pipeline-agent-$rand"
-        displayName: Generate random image name
-      - script: |
-          echo "image name: $(imagename)"
-          cat submodules/virtual-environments/images/linux/ubuntu2004.json | jq '.builders[0] += {"managed_image_resource_group_name": "CORE-RGprod","managed_image_name": "$(imagename)"}' |jq 'del(.builders[0].resource_group_name,.builders[0].storage_account,.builders[0].capture_container_name,.builders[0].capture_name_prefix)' > submodules/virtual-environments/images/linux/ubuntu_replaced.json
-        displayName: Update packer template
-        # update packer template to create a managed image instead of a vdh-file
-      - script: |
-          packer build -force submodules/virtual-environments/images/linux/ubuntu_replaced.json
-        displayName: Packer build
-        env: 
-          ARM_CLIENT_ID: 526cb446-977d-4db5-b110-40dc065ff64b # sp-terraform-core-prod
-          ARM_CLIENT_SECRET: $(client_secret)
-          ARM_SUBSCRIPTION_ID: 6cd117f2-adb1-452e-a60e-86131c1f11d4 # core
-          ARM_TENANT_ID: 2186a6ec-c227-4291-9806-d95340bf439d
-          ARM_RESOURCE_GROUP: CORE-RGprod
-          ARM_STORAGE_ACCOUNT: elviacoreprod
-          ARM_RESOURCE_LOCATION: westeurope
       - task: AzureCLI@2
         displayName: Update VM scale set with new image
         inputs:
@@ -53,5 +27,40 @@ stages:
           scriptLocation: inlineScript
           failOnStandardError: true
           inlineScript: |
-            az login
-            az vmss update --resource-group CORE-RGprod --name pipelineagent-vmss --set virtualMachineProfile.storageProfile.imageReference.id=subscriptions/6cd117f2-adb1-452e-a60e-86131c1f11d4/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/$(imagename)
+            az vmss update --resource-group CORE-RGprod --name pipelineagent-vmss --set virtualMachineProfile.storageProfile.imageReference.id=subscriptions/6cd117f2-adb1-452e-a60e-86131c1f11d4/resourceGroups/CORE-RGprod/providers/Microsoft.Compute/images/azure-devops-pipeline-agent-jHLVz7VZsII69
+      # - checkout: self
+      #   submodules: recursive  
+      #   persistCredentials: true
+      # - script: |
+      #     git submodule update --init --recursive
+      #   displayName: update submodule
+      # - script: |
+      #     rand=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13 ; echo '')
+      #     echo "##vso[task.setvariable variable=imagename]azure-devops-pipeline-agent-$rand"
+      #   displayName: Generate random image name
+      # - script: |
+      #     echo "image name: $(imagename)"
+      #     cat submodules/virtual-environments/images/linux/ubuntu2004.json | jq '.builders[0] += {"managed_image_resource_group_name": "CORE-RGprod","managed_image_name": "$(imagename)"}' |jq 'del(.builders[0].resource_group_name,.builders[0].storage_account,.builders[0].capture_container_name,.builders[0].capture_name_prefix)' > submodules/virtual-environments/images/linux/ubuntu_replaced.json
+      #   displayName: Update packer template
+      #   # update packer template to create a managed image instead of a vdh-file
+      # - script: |
+      #     packer build -force submodules/virtual-environments/images/linux/ubuntu_replaced.json
+      #   displayName: Packer build
+      #   env: 
+      #     ARM_CLIENT_ID: 526cb446-977d-4db5-b110-40dc065ff64b # sp-terraform-core-prod
+      #     ARM_CLIENT_SECRET: $(client_secret)
+      #     ARM_SUBSCRIPTION_ID: 6cd117f2-adb1-452e-a60e-86131c1f11d4 # core
+      #     ARM_TENANT_ID: 2186a6ec-c227-4291-9806-d95340bf439d
+      #     ARM_RESOURCE_GROUP: CORE-RGprod
+      #     ARM_STORAGE_ACCOUNT: elviacoreprod
+      #     ARM_RESOURCE_LOCATION: westeurope
+      # - task: AzureCLI@2
+      #   displayName: Update VM scale set with new image
+      #   inputs:
+      #     azureSubscription: azurerm-core
+      #     scriptType: bash
+      #     scriptLocation: inlineScript
+      #     failOnStandardError: true
+      #     inlineScript: |
+      #       az login
+      #       az vmss update --resource-group CORE-RGprod --name pipelineagent-vmss --set virtualMachineProfile.storageProfile.imageReference.id=subscriptions/6cd117f2-adb1-452e-a60e-86131c1f11d4/resourceGroups/CORE-RGprod/providers/Microsoft.Compute/images/$(imagename)
