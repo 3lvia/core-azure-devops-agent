@@ -26,7 +26,7 @@ stages:
           git config --local user.name "Azure Pipelines Core"
           git config --local user.email "azuredevops@elvia.no"
           git submodule update --remote --merge
-          git commit -m "git submodule update remote merge"
+          git commit -a -m "git submodule update remote merge"
           git push
         displayName: update submodule
       - script: |
