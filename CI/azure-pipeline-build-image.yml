@@ -27,7 +27,7 @@ stages:
           git config --local user.email "azuredevops@elvia.no"
           git submodule update --remote --merge
           git commit -a -m "git submodule update remote merge"
-          git push
+          git push origin HEAD:trunk
         displayName: update submodule
       - script: |
           rand=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13 ; echo '')
