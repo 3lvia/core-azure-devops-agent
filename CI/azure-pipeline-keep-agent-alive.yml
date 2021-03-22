@@ -11,5 +11,7 @@ trigger: none
 pool: elvia
 
 steps:
+  - bash: df
+    displayName: df
   - bash: echo "Ah, ha, ha, ha, stayin' alive, stayin' alive"
     displayName: Keep the elvia hosted agent alive
