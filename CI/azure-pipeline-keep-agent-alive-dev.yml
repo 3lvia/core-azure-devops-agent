@@ -5,5 +5,7 @@ pool: elvia-hosted-agent-dev
 steps:
   - bash: df
     displayName: df
+  - bash: curl ifconfig.me
+    displayName: curl ifconfig.me
   - bash: echo "Ah, ha, ha, ha, stayin' alive, stayin' alive"
     displayName: Keep the elvia-hosted-agent-dev agent alive
