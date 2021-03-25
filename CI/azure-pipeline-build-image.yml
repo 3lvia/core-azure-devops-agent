@@ -59,7 +59,7 @@ stages:
           scriptLocation: inlineScript
           failOnStandardError: true
           inlineScript: |
-            az vmss update --resource-group CORE-RGprod --name pipelineagent-vmss --set virtualMachineProfile.storageProfile.imageReference.id=subscriptions/6cd117f2-adb1-452e-a60e-86131c1f11d4/resourceGroups/CORE-RGprod/providers/Microsoft.Compute/images/$(imagename)
+            az vmss update --resource-group CORE-RGprod --name pipelineagent-vmss-prod --set virtualMachineProfile.storageProfile.imageReference.id=subscriptions/6cd117f2-adb1-452e-a60e-86131c1f11d4/resourceGroups/CORE-RGprod/providers/Microsoft.Compute/images/$(imagename)
       - task: AzureCLI@2
         displayName: Delete old image resources
         inputs:
