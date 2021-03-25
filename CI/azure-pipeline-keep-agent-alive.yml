@@ -1,0 +1,9 @@
+trigger: none
+
+pool: elvia-hosted-agent-dev
+
+steps:
+  - bash: df
+    displayName: df
+  - bash: curl http://ipinfo.io/json | jq '.'
+    displayName: Get IP
