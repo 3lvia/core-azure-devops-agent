@@ -1,6 +1,6 @@
 schedules:
-- cron: "0 7 * * 1-5"
-  displayName: At 07:00 on every day-of-week from Monday through Friday.
+- cron: "0 17 * * 1-5"
+  displayName: At 17:00 on every day-of-week from Monday through Friday.
   branches:
     include:
     - trunk
@@ -19,7 +19,7 @@ steps:
       elasticpools=$(curl --show-error --request GET --header "Content-Type: application/json" --user ":$AZDO_PERSONAL_ACCESS_TOKEN" "https://dev.azure.com/3lvia/_apis/distributedtask/elasticpools?api-version=6.1-preview.1")
       poolId=$(jq '.value | .[] | select(.azureId == "/subscriptions/6cd117f2-adb1-452e-a60e-86131c1f11d4/resourceGroups/CORE-RGPROD/providers/Microsoft.Compute/virtualMachineScaleSets/pipelineagent-vmss") | .poolId ' <<< $elasticpools)
       echo $poolId
-      curl --show-error --request PATCH --header "Content-Type: application/json" --user ":$AZDO_PERSONAL_ACCESS_TOKEN" --data '{"recycleAfterEachUse":false,"maxSavedNodeCount":0,"maxCapacity":4,"desiredIdle":2,"timeToLiveMinutes":120,"agentInteractiveUI":false}' "https://dev.azure.com/3lvia/_apis/distributedtask/elasticpools/$poolId?api-version=6.1-preview.1" 
-    displayName: Scale up elvia agent pool
+      curl --show-error --request PATCH --header "Content-Type: application/json" --user ":$AZDO_PERSONAL_ACCESS_TOKEN" --data '{"recycleAfterEachUse":false,"maxSavedNodeCount":0,"maxCapacity":4,"desiredIdle":0,"timeToLiveMinutes":10,"agentInteractiveUI":false}' "https://dev.azure.com/3lvia/_apis/distributedtask/elasticpools/$poolId?api-version=6.1-preview.1" 
+    displayName: Scale down elvia agent pool
     env: 
       AZDO_PERSONAL_ACCESS_TOKEN: $(azure_devops_personal_access_token)
