@@ -37,7 +37,7 @@ stages:
         displayName: Generate random image name
       - script: |
           echo "image name: $(imagename)"
-          cat submodules/virtual-environments/images/linux/ubuntu2004.json | jq '.builders[0] += {"managed_image_resource_group_name": "CORE-RGprod","managed_image_name": "$(imagename)"}'| jq '.builders[0].os_disk_size_gb = "286"' |jq 'del(.builders[0].resource_group_name,.builders[0].storage_account,.builders[0].capture_container_name,.builders[0].capture_name_prefix)' > submodules/virtual-environments/images/linux/ubuntu_replaced.json
+          cat submodules/virtual-environments/images/linux/ubuntu2004.json | jq '.builders[0] += {"managed_image_resource_group_name": "CORE-RGprod","managed_image_name": "$(imagename)"}'|jq 'del(.builders[0].resource_group_name,.builders[0].storage_account,.builders[0].capture_container_name,.builders[0].capture_name_prefix)' > submodules/virtual-environments/images/linux/ubuntu_replaced.json
         displayName: Update packer template
         # update packer template to create a managed image instead of a vdh-file
       - script: |
