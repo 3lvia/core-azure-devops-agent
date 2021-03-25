@@ -1,6 +1,6 @@
 trigger: none
 
-pool: elvia-hosted-agent-dev
+pool: elvia
 
 steps:
   - bash: df
