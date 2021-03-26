@@ -23,7 +23,7 @@ steps:
         echo "agent pool elvia not found"
         exit 1
       fi
-      curl --show-error --request PATCH --header "Content-Type: application/json" --user ":$AZDO_PERSONAL_ACCESS_TOKEN" --data '{"recycleAfterEachUse":false,"maxSavedNodeCount":0,"maxCapacity":4,"desiredIdle":2,"timeToLiveMinutes":120,"agentInteractiveUI":false}' "https://dev.azure.com/3lvia/_apis/distributedtask/elasticpools/$poolId?api-version=6.1-preview.1" 
+      curl --show-error --request PATCH --header "Content-Type: application/json" --user ":$AZDO_PERSONAL_ACCESS_TOKEN" --data '{"recycleAfterEachUse":false,"maxSavedNodeCount":0,"maxCapacity":4,"desiredIdle":1,"timeToLiveMinutes":10,"agentInteractiveUI":false}' "https://dev.azure.com/3lvia/_apis/distributedtask/elasticpools/$poolId?api-version=6.1-preview.1" 
     displayName: Scale up elvia agent pool
     env: 
       AZDO_PERSONAL_ACCESS_TOKEN: $(azure_devops_personal_access_token)
