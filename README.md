@@ -1,11 +1,4 @@
 # azure-devops-agent
-Scripts to set up an azure devops docker agent
-
-## to add new agents
-Create secret.yaml with a token from Azure Devops with permission "Agent pool (read+manage)".
-Create azuredevopsagent.yaml.
-Run
-```
-kubectl deploy -f secret.yaml
-kubectl deploy -f azuredevopsagent.yaml
-```
+Scripts to set up an azure devops agent on a VM scale set in Azure. 
+Uses packer to build the agent VM image. 
+The packer templates are imported from https://github.com/actions/virtual-environments as a submodule. 

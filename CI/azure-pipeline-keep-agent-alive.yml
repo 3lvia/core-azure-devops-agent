@@ -1,9 +1,0 @@
-trigger: none
-
-pool: elvia
-
-steps:
-  - bash: df
-    displayName: df
-  - bash: curl http://ipinfo.io/json | jq '.'
-    displayName: Get IP
