@@ -51,7 +51,7 @@ stages:
           ARM_RESOURCE_GROUP: CORE-RGprod
           ARM_STORAGE_ACCOUNT: elviacoreprod
           ARM_RESOURCE_LOCATION: westeurope
-      - task: AzureCLI@2.198.0
+      - task: AzureCLI@2.208.0
         displayName: Update VM scale set with new image
         inputs:
           azureSubscription: azurerm-core
@@ -60,7 +60,7 @@ stages:
           failOnStandardError: true
           inlineScript: |
             az vmss update --resource-group CORE-RGprod --name pipelineagent-vmss-prod --set virtualMachineProfile.storageProfile.imageReference.id=subscriptions/6cd117f2-adb1-452e-a60e-86131c1f11d4/resourceGroups/CORE-RGprod/providers/Microsoft.Compute/images/$(imagename)
-      - task: AzureCLI@2.198.0
+      - task: AzureCLI@2.208.0
         displayName: Delete old image resources
         inputs:
           azureSubscription: azurerm-core
