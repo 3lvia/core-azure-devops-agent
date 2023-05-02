@@ -12,7 +12,7 @@ pool:
   vmImage: "ubuntu-latest"
 
 variables: 
-- group: azure-devops
+- group: platform-bootstrap
 
 steps:
   - bash: |
@@ -26,4 +26,4 @@ steps:
       curl --show-error --request PATCH --header "Content-Type: application/json" --user ":$AZDO_PERSONAL_ACCESS_TOKEN" --data '{"recycleAfterEachUse":false,"maxSavedNodeCount":0,"maxCapacity":4,"desiredIdle":0,"timeToLiveMinutes":10,"agentInteractiveUI":false}' "https://dev.azure.com/3lvia/_apis/distributedtask/elasticpools/$poolId?api-version=6.1-preview.1" 
     displayName: Scale down elvia agent pool
     env: 
-      AZDO_PERSONAL_ACCESS_TOKEN: $(azure_devops_personal_access_token)
+      AZDO_PERSONAL_ACCESS_TOKEN: $(AZDO_PERSONAL_ACCESS_TOKEN)
