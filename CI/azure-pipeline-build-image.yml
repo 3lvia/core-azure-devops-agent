@@ -51,6 +51,7 @@ stages:
           ARM_RESOURCE_GROUP: CORE-RGprod
           ARM_STORAGE_ACCOUNT: elviacoreprod
           ARM_RESOURCE_LOCATION: westeurope
+          TERRAFORM_CLOUD_AGENT_TOKEN: $(TERRAFORM_CLOUD_AGENT_TOKEN)
       - task: AzureCLI@2.198.0
         displayName: Update VM scale set with new image
         inputs:

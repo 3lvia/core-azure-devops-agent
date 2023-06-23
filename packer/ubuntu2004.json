@@ -22,7 +22,8 @@
         "image_os": "ubuntu20",
         "run_validation_diskspace": "false",
         "dockerhub_login": "{{env `DOCKERHUB_LOGIN`}}",
-        "dockerhub_password": "{{env `DOCKERHUB_PASSWORD`}}"
+        "dockerhub_password": "{{env `DOCKERHUB_PASSWORD`}}",
+        "terraform_cloud_agent_token": "{{env `TERRAFORM_CLOUD_AGENT_TOKEN`}}"
     },
     "sensitive-variables": [
         "client_secret"
@@ -367,6 +368,13 @@
             "inline": [
                 "sleep 30",
                 "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"
+            ],
+            "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "docker run -d --restart unless-stopped -e TFC_AGENT_TOKEN='{{user `terraform_cloud_agent_token`}}' -e TFC_AGENT_NAME='elvia-hosted' hashicorp/tfc-agent:latest"
             ],
             "execute_command": "sudo sh -c '{{ .Vars }} {{ .Path }}'"
         }
