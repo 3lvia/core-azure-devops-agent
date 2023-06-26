@@ -22,8 +22,7 @@
         "image_os": "ubuntu20",
         "run_validation_diskspace": "false",
         "dockerhub_login": "{{env `DOCKERHUB_LOGIN`}}",
-        "dockerhub_password": "{{env `DOCKERHUB_PASSWORD`}}",
-        "terraform_cloud_agent_token": "{{env `TERRAFORM_CLOUD_AGENT_TOKEN`}}"
+        "dockerhub_password": "{{env `DOCKERHUB_PASSWORD`}}"
     },
     "sensitive-variables": [
         "client_secret"
