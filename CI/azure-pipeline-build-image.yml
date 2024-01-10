@@ -34,8 +34,9 @@ stages:
       - script: |
           rand=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13 ; echo '')
           echo "##vso[task.setvariable variable=imagename]azure-devops-pipeline-agent-$rand"
-          echo "image name: $(imagename)"
         displayName: Generate random image name
+      - script: |
+          echo "image name: $(imagename)"
       # - script: |
       #     echo "image name: $(imagename)"
       #     cat submodules/virtual-environments/images/linux/ubuntu2004.json | jq '.builders[0] += {"managed_image_resource_group_name": "CORE-RGprod","managed_image_name": "$(imagename)"}'|jq 'del(.builders[0].resource_group_name,.builders[0].storage_account,.builders[0].capture_container_name,.builders[0].capture_name_prefix)' > submodules/virtual-environments/images/linux/ubuntu_replaced.json
