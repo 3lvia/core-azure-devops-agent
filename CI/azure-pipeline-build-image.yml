@@ -42,7 +42,8 @@ stages:
       #   displayName: Update packer template
         # update packer template to create a managed image instead of a vdh-file
       - script: |
-          packer build submodules/virtual-environments/images/ubuntu/templates/ubuntu-22.04.pkr.hcl --var managed_image_name=$(imagename)
+          packer init submodules/virtual-environments/images/ubuntu/templates/ubuntu-22.04.pkr.hcl
+          packer build -var managed_image_name=$(imagename) submodules/virtual-environments/images/ubuntu/templates/ubuntu-22.04.pkr.hcl
         displayName: Packer build
         env: 
           ARM_CLIENT_ID: 526cb446-977d-4db5-b110-40dc065ff64b # sp-terraform-core-prod
