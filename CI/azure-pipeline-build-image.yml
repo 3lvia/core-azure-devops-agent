@@ -34,14 +34,15 @@ stages:
       - script: |
           rand=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13 ; echo '')
           echo "##vso[task.setvariable variable=imagename]azure-devops-pipeline-agent-$rand"
-        displayName: Generate random image name
-      - script: |
           echo "image name: $(imagename)"
-          cat submodules/virtual-environments/images/linux/ubuntu2004.json | jq '.builders[0] += {"managed_image_resource_group_name": "CORE-RGprod","managed_image_name": "$(imagename)"}'|jq 'del(.builders[0].resource_group_name,.builders[0].storage_account,.builders[0].capture_container_name,.builders[0].capture_name_prefix)' > submodules/virtual-environments/images/linux/ubuntu_replaced.json
-        displayName: Update packer template
+        displayName: Generate random image name
+      # - script: |
+      #     echo "image name: $(imagename)"
+      #     cat submodules/virtual-environments/images/linux/ubuntu2004.json | jq '.builders[0] += {"managed_image_resource_group_name": "CORE-RGprod","managed_image_name": "$(imagename)"}'|jq 'del(.builders[0].resource_group_name,.builders[0].storage_account,.builders[0].capture_container_name,.builders[0].capture_name_prefix)' > submodules/virtual-environments/images/linux/ubuntu_replaced.json
+      #   displayName: Update packer template
         # update packer template to create a managed image instead of a vdh-file
       - script: |
-          packer build submodules/virtual-environments/images/linux/ubuntu_replaced.json
+          packer build submodules/virtual-environments/images/ubuntu/templates/ubuntu-22.04.pkr.hcl --var managed_image_name=$(imagename)
         displayName: Packer build
         env: 
           ARM_CLIENT_ID: 526cb446-977d-4db5-b110-40dc065ff64b # sp-terraform-core-prod
