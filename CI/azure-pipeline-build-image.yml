@@ -15,14 +15,14 @@ pool:
 
 stages:
 - stage: BuildProd
-  variables: 
+  variables:
   - group: sp-terraform-core-prod
   jobs:
   - job:
     timeoutInMinutes: 360
     steps:
       - checkout: self
-        submodules: recursive  
+        submodules: recursive
         persistCredentials: true
       - script: |
           git config --local user.name "Azure Pipelines Core"
@@ -46,7 +46,7 @@ stages:
           packer init submodules/virtual-environments/images/ubuntu/templates/ubuntu-22.04.pkr.hcl
           packer build -var managed_image_name=$(imagename) submodules/virtual-environments/images/ubuntu/templates/ubuntu-22.04.pkr.hcl
         displayName: Packer build
-        env: 
+        env:
           ARM_CLIENT_ID: 526cb446-977d-4db5-b110-40dc065ff64b # sp-terraform-core-prod
           ARM_CLIENT_SECRET: $(client_secret)
           ARM_SUBSCRIPTION_ID: 6cd117f2-adb1-452e-a60e-86131c1f11d4 # core
@@ -73,16 +73,14 @@ stages:
           failOnStandardError: true
           inlineScript: |
             images=$(az image list)
-            for key in $(jq -r '.|keys|.[]' <<< $images) 
-            do 
+            for key in $(jq -r '.|keys|.[]' <<< $images); do
               row=$(jq -r ".[$key]" <<< $images)
               # id=$(jq -r ".id" <<< $row)
               name=$(jq -r ".name" <<< $row)
-              if [ $name == "azure-devops-pipeline-agent" ] || [ $name == $(imagename) ]
-              then
+              if [[ "$name" == "azure-devops-pipeline-agent" ]] || [[ "$name" == $(imagename) ]] || [[ "$name" == elvia-runner* ]]; then
                 continue
               fi
               # echo "id: $id"
               echo "name: $name"
-              az image delete -g CORE-RGprod -n $name
+              az image delete -g CORE-RGprod -n "$name"
             done
