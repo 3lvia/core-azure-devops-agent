@@ -43,6 +43,7 @@ stages:
       #   displayName: Update packer template
         # update packer template to create a managed image instead of a vdh-file
       - script: |
+          packer plugins install github.com/hashicorp/azure
           packer init submodules/virtual-environments/images/ubuntu/templates/ubuntu-22.04.pkr.hcl
           packer build -var managed_image_name=$(imagename) submodules/virtual-environments/images/ubuntu/templates/ubuntu-22.04.pkr.hcl
         displayName: Packer build
