@@ -8,10 +8,10 @@ schedules:
 
 trigger: none
 
-# pool: elvia-hosted-agent-dev
+pool: elvia
 
-pool:
-  vmImage: "ubuntu-latest"
+# pool:
+#   vmImage: "ubuntu-latest"
 
 stages:
 - stage: BuildProd
